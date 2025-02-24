@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p id="error-message"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+      // Correct Firebase Config with a valid API key
+      const firebaseConfig = {
+        apiKey: "AIzaSyAa2rrq6fys5M719cKc2oeh6iLSs_tufYI",
+        authDomain: "fir-ae430.firebaseapp.com",
+        projectId: "fir-ae430",
+        storageBucket: "fir-ae430.appspot.com",
+        messagingSenderId: "77174668179",
+        appId: "1:77174668179:web:91f504ae2d5b7ac23f266",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", (event) => {
+          event.preventDefault(); // Prevents page reload
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const errorMessage = document.getElementById("error-message");
+
+          if (!email || !password) {
+            errorMessage.innerText = "Please fill in all fields.";
+            return;
+          }
+
+          signInWithEmailAndPassword(auth, email, password)
+            .then(() => {
+              window.location.href = "dashboard.html";
+            })
+            .catch((error) => {
+              errorMessage.innerText = error.message;
+            });
+        });
+    </script>
+  </body>
+</html>
